@@ -29,7 +29,7 @@ import {
     FormattingOptions,
 } from "vscode-languageserver-types";
 import { LanguageMode, Settings } from "./languageModes";
-import { getWordAtText, startsWith, repeat } from "../utils/strings";
+import { getWordAtText, startsWith } from "../utils/strings";
 import { HTMLDocumentRegions } from "./embeddedSupport";
 
 import * as ts from "typescript";
@@ -358,55 +358,4 @@ function convertSymbolKind(kind: string): SymbolKind {
             return SymbolKind.Property;
     }
     return SymbolKind.Variable;
-}
-
-function convertOptions(options: FormattingOptions, formatSettings: any, initialIndentLevel: number): ts.FormatCodeOptions {
-    return {
-        ConvertTabsToSpaces: options.insertSpaces,
-        TabSize: options.tabSize,
-        IndentSize: options.tabSize,
-        IndentStyle: ts.IndentStyle.Smart,
-        NewLineCharacter: "\n",
-        BaseIndentSize: options.tabSize * initialIndentLevel,
-        InsertSpaceAfterCommaDelimiter: Boolean(!formatSettings || formatSettings.insertSpaceAfterCommaDelimiter),
-        InsertSpaceAfterSemicolonInForStatements: Boolean(!formatSettings || formatSettings.insertSpaceAfterSemicolonInForStatements),
-        InsertSpaceBeforeAndAfterBinaryOperators: Boolean(!formatSettings || formatSettings.insertSpaceBeforeAndAfterBinaryOperators),
-        InsertSpaceAfterKeywordsInControlFlowStatements: Boolean(!formatSettings || formatSettings.insertSpaceAfterKeywordsInControlFlowStatements),
-        InsertSpaceAfterFunctionKeywordForAnonymousFunctions: Boolean(!formatSettings || formatSettings.insertSpaceAfterFunctionKeywordForAnonymousFunctions),
-        InsertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis: Boolean(formatSettings && formatSettings.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis),
-        InsertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets: Boolean(formatSettings && formatSettings.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets),
-        InsertSpaceAfterOpeningAndBeforeClosingNonemptyBraces: Boolean(formatSettings && formatSettings.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces),
-        InsertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces: Boolean(formatSettings && formatSettings.insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces),
-        PlaceOpenBraceOnNewLineForControlBlocks: Boolean(formatSettings && formatSettings.placeOpenBraceOnNewLineForFunctions),
-        PlaceOpenBraceOnNewLineForFunctions: Boolean(formatSettings && formatSettings.placeOpenBraceOnNewLineForControlBlocks),
-    };
-}
-
-function computeInitialIndent(document: TextDocument, range: Range, options: FormattingOptions) {
-    let lineStart = document.offsetAt(Position.create(range.start.line, 0));
-    let content = document.getText();
-
-    let i = lineStart;
-    let nChars = 0;
-    let tabSize = options.tabSize || 4;
-    while (i < content.length) {
-        let ch = content.charAt(i);
-        if (ch === " ") {
-            nChars++;
-        } else if (ch === "\t") {
-            nChars += tabSize;
-        } else {
-            break;
-        }
-        i++;
-    }
-    return Math.floor(nChars / tabSize);
-}
-
-function generateIndent(level: number, options: FormattingOptions) {
-    if (options.insertSpaces) {
-        return repeat(" ", level * options.tabSize);
-    } else {
-        return repeat("\t", level);
-    }
 }

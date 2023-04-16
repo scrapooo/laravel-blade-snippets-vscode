@@ -17,7 +17,6 @@ export class BladeFormatter {
     }
 
     format(inuptText: string): string {
-        let inComment: boolean = false;
         let output: string = inuptText;
 
         // fix #57 url extra space after formatting

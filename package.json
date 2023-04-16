@@ -40,6 +40,7 @@
   "main": "./out/extension.js",
   "scripts": {
     "build-srv": "cd ./server && npm install && tsc -p ./",
+    "watch-srv": "cd ./server && npm install && tsc -watch -p  ./",
     "compile": "tsc -watch -p ./",
     "vscode:prepublish": "webpack --mode production && pushd \"./\" && npm run build-srv && popd",
     "webpack": "webpack --mode development",
@@ -67,7 +68,8 @@
         "embeddedLanguages": {
           "source.php": "php",
           "source.css": "css",
-          "source.js": "javascript"
+          "source.js": "javascript",
+          "source.css.less": "less"
         }
       }
     ],
@@ -94,7 +96,7 @@
       "properties": {
         "blade.format.enable": {
           "type": "boolean",
-          "default": false,
+          "default": true,
           "description": "Enable format blade file"
         }
       }

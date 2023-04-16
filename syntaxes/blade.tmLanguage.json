@@ -129,6 +129,9 @@
   },
   "patterns": [
     {
+      "include": "#less"
+    },
+    {
       "include": "text.html.basic"
     }
   ],
@@ -3893,6 +3896,36 @@
           "patterns": [
             {
               "include": "#language"
+            }
+          ]
+        }
+      ]
+    },
+    "less": {
+      "patterns": [
+        {
+          "begin": "\\s*<style.+(type)=(\"text/less\")?.*>",
+          "beginCaptures": {
+            "0": {
+              "name": "entity.name.tag.html"
+            },
+            "1": {
+              "name": "entity.other.attribute-name.html"
+            },
+            "2": {
+              "name": "string.quoted.double.html"
+            }
+          },
+          "end": "\\s*</style>",
+          "endCaptures": {
+            "0": {
+              "name": "entity.name.tag.html"
+            }
+          },
+          "contentName": "source.css.less",
+          "patterns": [
+            {
+              "include": "source.css.less"
             }
           ]
         }

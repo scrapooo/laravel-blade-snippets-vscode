@@ -9,7 +9,6 @@ src/**
 tsconfig.json
 vsc-extension-quickstart.md
 server/src/**
-server/lib/**
 server/*.json
 server/node_modules/.bin/
 server/node_modules/@types/
@@ -18,3 +17,7 @@ webpack.config.js
 node_modules/**
 **/*.ts
 **/tsconfig.json
+*.md
+
+!server/lib/**
+!server/node_modules/typescript/lib/lib.es6.d.ts

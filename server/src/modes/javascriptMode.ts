@@ -33,11 +33,10 @@ import { getWordAtText, startsWith } from "../utils/strings";
 import { HTMLDocumentRegions } from "./embeddedSupport";
 
 import * as ts from "typescript";
-import { join } from "path";
 import * as prettier from "../utils/prettier";
+import { loadLibrary } from "../javascriptLibs";
 
 const FILE_NAME = "vscode://javascript/1"; // the same 'file' is used for all contents
-const JQUERY_D_TS = join(__dirname, "../../lib/jquery.d.ts");
 
 const JS_WORD_REGEX = /(-?\d*\.\d\w*)|([^\`\~\!\@\#\%\^\&\*\(\)\-\=\+\[\{\]\}\\\|\;\:\'\"\,\.\<\>\/\?\s]+)/g;
 
@@ -55,7 +54,7 @@ export function getJavascriptMode(documentRegions: LanguageModelCache<HTMLDocume
     }
     const host: ts.LanguageServiceHost = {
         getCompilationSettings: () => compilerOptions,
-        getScriptFileNames: () => [FILE_NAME, JQUERY_D_TS],
+        getScriptFileNames: () => [FILE_NAME, "jquery"],
         getScriptKind: () => ts.ScriptKind.JS,
         getScriptVersion: (fileName: string) => {
             if (fileName === FILE_NAME) {
@@ -70,7 +69,7 @@ export function getJavascriptMode(documentRegions: LanguageModelCache<HTMLDocume
                     text = currentTextDocument.getText();
                 }
             } else {
-                text = ts.sys.readFile(fileName) || "";
+                text = loadLibrary(fileName);
             }
             return {
                 getText: (start, end) => text.substring(start, end),

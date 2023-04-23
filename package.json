@@ -2,7 +2,7 @@
   "name": "laravel-blade-scrapooo",
   "displayName": "Laravel Blade Scarpooo",
   "description": "Laravel blade snippets and syntax highlight support and less support and format",
-  "version": "1.35.1",
+  "version": "1.36.0",
   "publisher": "scrapooo",
   "author": {
     "name": "Winnie Lin",
@@ -94,10 +94,10 @@
     "configuration": {
       "title": "Blade Configuration",
       "properties": {
-        "blade.format.enable": {
-          "type": "boolean",
-          "default": true,
-          "description": "Enable format blade file"
+        "blade.views.path": {
+          "type": "string",
+          "default": "resources/views",
+          "description": "base view path of blade。"
         }
       }
     }

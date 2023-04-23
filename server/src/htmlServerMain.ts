@@ -19,7 +19,7 @@ import {
     Position,
     CompletionTriggerKind,
 } from "vscode-languageserver";
-import { TextDocument, Diagnostic, DocumentLink, SymbolInformation, CompletionList, TextEdit, Range } from "vscode-languageserver-types";
+import { TextDocument, Diagnostic, DocumentLink, SymbolInformation, CompletionList, TextEdit, Range, Definition } from "vscode-languageserver-types";
 import { getLanguageModes, LanguageModes, Settings } from "./modes/languageModes";
 
 import { ConfigurationRequest, ConfigurationParams } from "vscode-languageserver-protocol/lib/protocol.configuration.proposed";
@@ -36,6 +36,7 @@ import { doComplete as emmetDoComplete, updateExtensionsPath as updateEmmetExten
 import { getLanguageService as getHTMLLanguageService } from "vscode-html-languageservice";
 import * as embeddedSupport from "./modes/embeddedSupport";
 import { BladeFormatter } from "./BladeFormatter";
+import * as blade from "./blade";
 
 namespace TagCloseRequest {
     export const type: RequestType<TextDocumentPositionParams, string | null, any, any> = new RequestType("html/tag");
@@ -386,11 +387,21 @@ connection.onDefinition((definitionParams) => {
     return runSafe(
         () => {
             let document = documents.get(definitionParams.textDocument.uri);
+
+            let defs: Definition = [];
+
+            defs = defs.concat(
+                blade.peekFileDefinition(document, definitionParams.position, {
+                    settings: globalSettings,
+                    workspaceFolders: workspaceFolders,
+                })
+            );
+
             let mode = languageModes.getModeAtPosition(document, definitionParams.position);
             if (mode && mode.findDefinition) {
-                return mode.findDefinition(document, definitionParams.position);
+                defs = defs.concat(mode.findDefinition(document, definitionParams.position));
             }
-            return [];
+            return defs;
         },
         null,
         `Error while computing definitions for ${definitionParams.textDocument.uri}`

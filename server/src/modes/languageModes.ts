@@ -39,6 +39,7 @@ export interface Settings {
     html?: any;
     javascript?: any;
     emmet?: { [key: string]: any };
+    blade?: any;
 }
 
 export interface SettingProvider {
@@ -100,7 +101,6 @@ export function getLanguageModes(supportedLanguages: { [languageId: string]: boo
     if (supportedLanguages["less"]) {
         modes["less"] = getLESSMode(documentRegions);
     }
-
 
     return {
         getModeAtPosition(document: TextDocument, position: Position): LanguageMode | undefined {

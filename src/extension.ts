@@ -23,12 +23,6 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(vscode.languages.registerDocumentHighlightProvider(documentSelector, new DocumentHighlight()));
 
-    let bladeFormatCfg = vscode.workspace.getConfiguration("blade.format");
-    // if (bladeFormatCfg.get<boolean>("enable")) {
-    //     context.subscriptions.push(vscode.languages.registerDocumentFormattingEditProvider(documentSelector, new BladeFormattingEditProvider()));
-    //     context.subscriptions.push(vscode.languages.registerDocumentRangeFormattingEditProvider(documentSelector, new BladeFormattingEditProvider()));
-    // }
-
     // Set html indent
     const EMPTY_ELEMENTS: string[] = ["area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "menuitem", "meta", "param", "source", "track", "wbr"];
     vscode.languages.setLanguageConfiguration("blade", {

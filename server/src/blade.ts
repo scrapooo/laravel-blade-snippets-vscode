@@ -38,7 +38,7 @@ export function peekFileDefinition(document: TextDocument, position: Position, o
     const includeParts: IncludePart[] = []; // 查询lineText中所有@include 和 @extend 中的字符串
 
     if (lineText && lineText.trim()) {
-        const regex = /@(?:include|extends)\((.+?)\)/gi;
+        const regex = /@(?:include|extends)\((.+?('|"))/gi;
         let match: RegExpExecArray = null;
         while ((match = regex.exec(lineText))) {
             const tpl = match[1].replace(/'|"/g, "");
